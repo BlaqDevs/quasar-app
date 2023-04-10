@@ -1,41 +1,111 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="lHr LpR lFr">
+    <q-header bordered class="bg-white text-black">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-icon color="primary" name="fas fa-dove" size="sm" class="q-pa-lg lt-md absolute-center" />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="text-weight-bold gt-sm">
+          {{$route.name}}
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
       show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
       bordered
+      :width="283"
     >
+      <q-icon color="primary" name="fas fa-dove" size="lg" class="q-pa-lg" />
+      <!-- drawer content -->
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
+        <q-item exact clickable v-ripple to="/">
+          <q-item-section avatar>
+            <q-icon name="house" size="md" />
+          </q-item-section>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+          <q-item-section class="text-h6 text-weight-bold">Home</q-item-section>
+        </q-item>
+        <q-item exact clickable v-ripple to="/about">
+          <q-item-section avatar>
+            <q-icon name="help" size="md" />
+          </q-item-section>
+
+          <q-item-section class="text-h6 text-weight-bold"
+            >About</q-item-section
+          >
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+      <!-- drawer content -->
+      <q-input
+        color="purple-12"
+        class="q-ma-md"
+        label="Search Bwitter"
+        dense
+        outlined
+        rounded
+      >
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <q-list padding separator>
+        <q-item-label header class="text-weight-bold"
+          >What's Hapenninig</q-item-label
+        >
+        <q-item>
+          <q-item-section class="q-pa-md">
+            <q-item-label overline>Tech</q-item-label>
+            <q-item-label class="text-weight-bold"
+              >Something Nice don sup</q-item-label
+            >
+            <q-item-label caption
+              >Secondary line text. Lorem ipsum dolor sit amet, consectetur
+              adipiscit elit.</q-item-label
+            >
+          </q-item-section>
+
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item>
+          <q-item-section class="q-pa-md">
+            <q-item-label overline>Tech</q-item-label>
+            <q-item-label class="text-weight-bold"
+              >Something Nice don sup</q-item-label
+            >
+            <q-item-label caption
+              >Secondary line text. Lorem ipsum dolor sit amet, consectetur
+              adipiscit elit.</q-item-label
+            >
+          </q-item-section>
+
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item>
+          <q-item-section class="q-pa-md">
+            <q-item-label overline>Tech</q-item-label>
+            <q-item-label class="text-weight-bold"
+              >Something Nice don sup</q-item-label
+            >
+            <q-item-label caption
+              >Secondary line text. Lorem ipsum dolor sit amet, consectetur
+              adipiscit elit.</q-item-label
+            >
+          </q-item-section>
+
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -46,72 +116,24 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
+import { ref } from "vue";
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
-import { defineComponent, ref } from 'vue'
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
-
-  setup () {
-    const leftDrawerOpen = ref(false)
+export default {
+  setup() {
+    const leftDrawerOpen = ref(false);
+    const rightDrawerOpen = ref(false);
 
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+
+      rightDrawerOpen,
+      toggleRightDrawer() {
+        rightDrawerOpen.value = !rightDrawerOpen.value;
+      },
+    };
+  },
+};
 </script>
